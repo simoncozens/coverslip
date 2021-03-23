@@ -10,7 +10,7 @@ var shapableWords: string[];
 type WordTuple = [number, string[]];
 var wordsByEm: WordTuple[];
 
-fetch("/harfbuzz.wasm")
+fetch("harfbuzz.wasm")
   .then((response) => response.arrayBuffer())
   .then((bytes) => WebAssembly.instantiate(bytes))
   .then((results) => {
