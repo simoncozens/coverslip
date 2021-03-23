@@ -1,0 +1,106 @@
+/*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
+@font-face {
+    font-family: "Adobe NotDef";
+    src: url("../fonts/AND-Regular.otf") format("opentype");
+}
+
+/* ==========================================================================
+   Base styles: opinionated defaults
+   ========================================================================== */
+
+html,
+button,
+input,
+select,
+textarea {
+    color: #222;
+    font-family: sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
+html {
+    text-rendering: optimizeLegibility;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+#fontdrop_view {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#newspaper_headline {
+    text-align: center;
+    font-size: 36px;
+    white-space: nowrap;
+}
+
+#newspaper_body {
+    margin: 0 auto;
+    column-count: 3;
+    column-gap: 36px;
+    text-align: justify;
+    font-size: 20px;
+}
+
+.failed {
+    background: #fdd;
+    font-family: sans-serif;
+}
+#waterfallblock {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#waterfall {
+    margin: 5px;
+    background: #fafafa;
+    white-space: nowrap;
+    text-align: center;
+}
+
+#waterfall div:nth-of-type(1) {
+    font-size: 100px;
+}
+#waterfall div:nth-of-type(2) {
+    font-size: 80px;
+}
+#waterfall div:nth-of-type(3) {
+    font-size: 60px;
+}
+#waterfall div:nth-of-type(4) {
+    font-size: 50px;
+}
+
+#waterfall div:nth-of-type(5) {
+    font-size: 40px;
+}
+
+#waterfall div:nth-of-type(6) {
+    font-size: 30px;
+}
+
+#waterfall div:nth-of-type(7) {
+    font-size: 20px;
+}
+
+#fonts {
+    display: none;
+}
+
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    .no_print {
+        display: none !important;
+    }
+    .print_only {
+        display: block;
+    }
+}

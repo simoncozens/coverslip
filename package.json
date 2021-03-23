@@ -1,0 +1,24 @@
+{
+  "name": "coverslip",
+  "version": "1.0.0",
+  "description": "Create specimens automatically",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && browserify -s coverslip -g uglifyify js/index.js -o app.js"
+  },
+  "author": "Simon Cozens",
+  "license": "MIT",
+  "dependencies": {
+    "@types/opentype.js": "^0.7.2",
+    "browserify": "^16.5.0",
+    "jquery": "^3.4.1",
+    "opentype.js": "^0.8.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.8.2"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.3.33",
+    "uglifyify": "^5.0.2"
+  }
+}
