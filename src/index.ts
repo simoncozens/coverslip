@@ -59,7 +59,7 @@ function randElement(items) {
 }
 
 function rebuild() {
-  console.log("Rebuild called");
+  // console.log("Rebuild called");
   if (!font) return;
   fitHeadline();
   fitWaterfall();
@@ -67,7 +67,13 @@ function rebuild() {
 }
 
 function fitBody() {
-  $("#newspaper_body").text(sentences.join(""));
+  var body = "";
+  for (var i = 1; i <= 3; i++) {
+    shuffleArray(sentences);
+    var para = sentences.slice(0, 3);
+    body = body + "" + para.join("") + "<p></p>";
+  }
+  $("#newspaper_body").html(body);
 }
 
 function fitWaterfall() {
@@ -94,18 +100,18 @@ function fitWaterfall() {
       window.getComputedStyle(this).fontSize.replace("px", ""),
       10
     );
-    console.log("Row ", index, ": width", width, " font size ", fontsize);
+    // console.log("Row ", index, ": width", width, " font size ", fontsize);
     var target_units = (width / fontsize) * font.otFont.unitsPerEm;
     var onespace = font.otFont.charToGlyph(" ").advanceWidth;
     var eachword = (target_units - index * onespace) / (1 + index);
     var text = "";
     for (var i = 0; i <= index; i++) {
-      console.log("Looking for a word of " + eachword + " Units");
+      // console.log("Looking for a word of " + eachword + " Units");
       // Grab best
       var wordIdx = binarySearch(wordsByEm, eachword, function (units, tuple) {
         return units - tuple[0];
       });
-      console.log("Got ", wordsByEm[wordIdx]);
+      // console.log("Got ", wordsByEm[wordIdx]);
       var word = randElement(wordsByEm[wordIdx][1]);
       text = text + word + " ";
     }
@@ -124,7 +130,7 @@ function fitHeadline() {
   var chosen = titles.find(
     (c) => font.canShape(c) && font.fits(c, fontsize, headlineWidth)
   );
-  console.log(fontsize, chosen, font.shapedWidth(chosen, fontsize));
+  // console.log(fontsize, chosen, font.shapedWidth(chosen, fontsize));
   if (!chosen) {
     headline.addClass("failed");
     headline.text("I don't have a headline you can shape");
@@ -150,20 +156,20 @@ function getSentences() {
     url: ENDPOINT,
     method: "POST",
     dataType: "json",
-    data: JSON.stringify({ cps: cpstring }),
+    data: JSON.stringify(cpstring),
   })
     .done(function (data) {
-      console.log("Got sentences");
-      console.log(sentences);
-      sentences = data.filter(font.canShape);
+      sentences = data.filter((s) => font.canShape(s));
+      rebuild();
     })
     .fail(function (xhr, status, error) {
       $("#newspaper_body").text("Oops - something went wrong. " + error);
+      rebuild();
     });
 }
 
 window["fontDropCallback"] = function (newFont) {
-  console.log("Dropped", newFont);
+  // console.log("Dropped", newFont);
   var css = `"${newFont.title}", "Adobe NotDef"`;
   $("#fontdrop_view").css("font-family", css);
   // @ts-ignore: CSS stylesheets are messy.
@@ -177,7 +183,6 @@ window["fontDropCallback"] = function (newFont) {
   sentences = [];
 
   getSentences();
-  rebuild();
 };
 
 $(function () {
