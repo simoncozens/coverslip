@@ -146,7 +146,12 @@ function _base64ToArrayBuffer(base64) {
 
 function getSentences() {
   var cpstring = String.fromCodePoint(...font.supportedCodepoints);
-  $.getJSON(ENDPOINT, { cps: cpstring })
+  $.ajax({
+    url: ENDPOINT,
+    method: "POST",
+    dataType: "json",
+    data: JSON.stringify({ cps: cpstring }),
+  })
     .done(function (data) {
       console.log("Got sentences");
       console.log(sentences);
