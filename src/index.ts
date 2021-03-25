@@ -147,6 +147,7 @@ function fitHeadline() {
 }
 
 function _base64ToArrayBuffer(base64) {
+  base64 = base64.replace(/\s/g, "").replace(/"$/, "");
   var binary_string = window.atob(base64);
   var len = binary_string.length;
   var bytes = new Uint8Array(len);
@@ -181,7 +182,7 @@ window["fontDropCallback"] = function (newFont) {
   var css = `"${newFont.title}", "Adobe NotDef"`;
   $("#fontdrop_view").css("font-family", css);
   // @ts-ignore: CSS stylesheets are messy.
-  var fontUrl = document.styleSheets[1].rules[0].style.src;
+  var fontUrl = document.styleSheets[1].rules[0].style.getPropertyValue("src");
   fontUrl = fontUrl.slice(4, -1); // url( ... )
   var fontData = _base64ToArrayBuffer(fontUrl.split(",")[1]);
 
