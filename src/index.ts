@@ -5,10 +5,15 @@ import * as words from "./words.json";
 import * as hbjs from "./hbjs";
 var font: MyFont;
 
+var ENDPOINT =
+  "https://67ubhe3vi0.execute-api.us-east-1.amazonaws.com/v1/get-sentences";
+
 declare let window: any;
 var shapableWords: string[];
 type WordTuple = [number, string[]];
 var wordsByEm: WordTuple[];
+
+var sentences: string[];
 
 fetch("harfbuzz.wasm")
   .then((response) => response.arrayBuffer())
@@ -57,10 +62,15 @@ function rebuild() {
   console.log("Rebuild called");
   if (!font) return;
   fitHeadline();
-  fitWords();
+  fitWaterfall();
+  fitBody();
 }
 
-function fitWords() {
+function fitBody() {
+  $("#newspaper_body").text(sentences.join(""));
+}
+
+function fitWaterfall() {
   if (!wordsByEm.length) {
     shapableWords = [];
     var wordCache: Record<number, WordTuple> = {};
@@ -78,12 +88,6 @@ function fitWords() {
   }
 
   var text = "";
-  console.log(wordsByEm);
-  for (var i = 0; i < 100; i++) {
-    text = text + " " + randElement(shapableWords);
-  }
-  $("#newspaper_body").text(text);
-
   $("#waterfall div").each(function (index) {
     var width = $(this).width();
     var fontsize = parseInt(
@@ -140,6 +144,19 @@ function _base64ToArrayBuffer(base64) {
   return bytes.buffer;
 }
 
+function getSentences() {
+  var cpstring = String.fromCodePoint(...font.supportedCodepoints);
+  $.getJSON(ENDPOINT, { cps: cpstring })
+    .done(function (data) {
+      console.log("Got sentences");
+      console.log(sentences);
+      sentences = data.filter(font.canShape);
+    })
+    .fail(function (xhr, status, error) {
+      $("#newspaper_body").text("Oops - something went wrong. " + error);
+    });
+}
+
 window["fontDropCallback"] = function (newFont) {
   console.log("Dropped", newFont);
   var css = `"${newFont.title}", "Adobe NotDef"`;
@@ -152,6 +169,9 @@ window["fontDropCallback"] = function (newFont) {
   font = new MyFont(fontData);
   shapableWords = [];
   wordsByEm = [];
+  sentences = [];
+
+  getSentences();
   rebuild();
 };
 
