@@ -137,12 +137,12 @@ function fitHeadline() {
     (c) => font.canShape(c) && font.fits(c, fontsize, headlineWidth)
   );
   // console.log(fontsize, chosen, font.shapedWidth(chosen, fontsize));
-  if (!chosen) {
-    headline.addClass("failed");
-    headline.text("I don't have a headline you can shape");
-  } else {
+  if (chosen) {
     headline.text(chosen);
     headline.removeClass("failed");
+    // } else {
+    //   headline.addClass("failed");
+    //   headline.text("I don't have a headline you can shape");
   }
 }
 
