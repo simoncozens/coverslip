@@ -1,6 +1,5 @@
 import * as $ from "jquery";
 import { MyFont } from "./font";
-import * as titles from "./titles.json";
 import * as words from "./words.json";
 import * as hbjs from "./hbjs";
 var font: MyFont;
@@ -14,6 +13,7 @@ type WordTuple = [number, string[]];
 var wordsByEm: WordTuple[];
 
 var sentences: string[];
+var titles: string[];
 
 fetch("harfbuzz.wasm")
   .then((response) => response.arrayBuffer())
@@ -159,7 +159,8 @@ function getSentences() {
     data: JSON.stringify(cpstring),
   })
     .done(function (data) {
-      sentences = data.filter((s) => font.canShape(s));
+      titles = data["titles"].filter((s) => font.canShape(s));
+      sentences = data["sentences"].filter((s) => font.canShape(s));
       rebuild();
     })
     .fail(function (xhr, status, error) {
@@ -181,6 +182,7 @@ window["fontDropCallback"] = function (newFont) {
   shapableWords = [];
   wordsByEm = [];
   sentences = [];
+  titles = [];
 
   getSentences();
 };
