@@ -105,15 +105,21 @@ function fitWaterfall() {
     var onespace = font.otFont.charToGlyph(" ").advanceWidth;
     var eachword = (target_units - index * onespace) / (1 + index);
     var text = "";
-    for (var i = 0; i <= index; i++) {
-      // console.log("Looking for a word of " + eachword + " Units");
-      // Grab best
-      var wordIdx = binarySearch(wordsByEm, eachword, function (units, tuple) {
-        return units - tuple[0];
-      });
-      // console.log("Got ", wordsByEm[wordIdx]);
-      var word = randElement(wordsByEm[wordIdx][1]);
-      text = text + word + " ";
+    if (wordsByEm.length > 0) {
+      for (var i = 0; i <= index; i++) {
+        // console.log("Looking for a word of " + eachword + " Units");
+        // Grab best
+        var wordIdx = binarySearch(
+          wordsByEm,
+          eachword,
+          function (units, tuple) {
+            return units - tuple[0];
+          }
+        );
+        // console.log("Got ", wordsByEm[wordIdx]);
+        var word = randElement(wordsByEm[wordIdx][1]);
+        text = text + word + " ";
+      }
     }
     $(this).text(text);
   });
@@ -159,6 +165,7 @@ function getSentences() {
     data: JSON.stringify(cpstring),
   })
     .done(function (data) {
+      console.log(data);
       titles = data["titles"].filter((s) => font.canShape(s));
       sentences = data["sentences"].filter((s) => font.canShape(s));
       rebuild();

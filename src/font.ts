@@ -61,9 +61,6 @@ export class MyFont {
       if (glyph.unicode == 32) {
         continue;
       }
-      if (glyph.getMetrics()["xMin"] == 0) {
-        return false;
-      }
     }
     return true;
   }
